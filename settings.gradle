@@ -1,8 +1,7 @@
 rootProject.name = 'brokerage-firm-api'
+
 include 'application'
 include 'application-core'
 include 'infrastructure'
 include 'infrastructure:h2-jpa-adapter'
 include 'infrastructure:spring-web-rest-adapter'
-findProject(':infrastructure:spring-web-rest-adapter')?.name = 'spring-web-rest-adapter'
-
