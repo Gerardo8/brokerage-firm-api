@@ -3,6 +3,8 @@ package com.gbm.brokeragefirmapi;
 import com.gbm.brokeragefirmapi.domain.model.Account;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
@@ -14,6 +16,7 @@ public class AccountJpaMapper {
                 .builder()
                 .id(accountJpaEntity.getId())
                 .cash(accountJpaEntity.getCash())
+                .issuers(new ArrayList<>())
                 .build();
     }
 
