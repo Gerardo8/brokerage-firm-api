@@ -4,21 +4,23 @@ import com.gbm.brokeragefirmapi.domain.model.Order;
 import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder;
 import com.gbm.brokeragefirmapi.port.primary.SendOrderServicePort;
 import com.gbm.brokeragefirmapi.port.secondary.AccountRepositoryPort;
+import com.gbm.brokeragefirmapi.port.secondary.IssuerTransactionRepositoryPort;
 import com.gbm.brokeragefirmapi.port.secondary.StockRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-
+import static com.gbm.brokeragefirmapi.domain.factory.IssuerTransactionFactory.createIssuerTransactionId;
+import static com.gbm.brokeragefirmapi.domain.factory.ProcessedOrderFactory.createFailedProcessedOrder;
 import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.CLOSE_MARKET;
+import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.DUPLICATE_OPERATION;
 import static com.gbm.brokeragefirmapi.utils.SendOrderConstants.SIX_AM;
 import static com.gbm.brokeragefirmapi.utils.SendOrderConstants.THREE_PM;
-import static java.util.Collections.singletonList;
 
 @RequiredArgsConstructor
 public class SendOrderService implements SendOrderServicePort {
 
     private final AccountRepositoryPort accountRepositoryPort;
     private final StockRepositoryPort stockRepositoryPort;
+    private final IssuerTransactionRepositoryPort issuerTransactionRepositoryPort;
     private final SendBuyOrderOperation sendBuyOrderOperation;
     private final SendSellOrderOperation sendSellOrderOperation;
 
@@ -33,7 +35,12 @@ public class SendOrderService implements SendOrderServicePort {
 
         if (!time.isAfter(SIX_AM) || !time.isBefore(THREE_PM)) {
 
-            return new ProcessedOrder(new ProcessedOrder.CurrentBalance(accountById.getCash(), new ArrayList<>()), singletonList(CLOSE_MARKET));
+            return createFailedProcessedOrder(accountById, CLOSE_MARKET);
+        }
+
+        if (this.issuerTransactionRepositoryPort.findById(createIssuerTransactionId(order)).isPresent()) {
+
+            return createFailedProcessedOrder(accountById, DUPLICATE_OPERATION);
         }
 
         final var stock = this.stockRepositoryPort
