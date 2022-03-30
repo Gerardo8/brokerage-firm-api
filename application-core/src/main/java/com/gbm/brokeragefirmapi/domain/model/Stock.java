@@ -5,18 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class Issuer {
+@NoArgsConstructor
+public class Stock {
 
     private Integer id;
 
-    private Integer totalShares;
+    private String issuerName;
 
-    private Account account;
-
-    private Stock stock;
-
+    private BigDecimal sharePrice;
 }

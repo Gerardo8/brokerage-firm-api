@@ -20,6 +20,10 @@ public class Account {
 
     private List<Issuer> issuers;
 
+    public Account(final Long id) {
+        this.id = id;
+    }
+
     public Account(final BigDecimal cash) {
         this.cash = cash;
     }
