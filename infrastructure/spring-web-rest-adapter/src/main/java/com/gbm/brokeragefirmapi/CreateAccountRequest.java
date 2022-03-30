@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Data
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class CreateAccountRequest {
 
+    @Positive
     private BigDecimal cash;
 
 }

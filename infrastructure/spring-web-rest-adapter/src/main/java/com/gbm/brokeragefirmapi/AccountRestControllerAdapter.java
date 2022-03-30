@@ -6,6 +6,8 @@ import com.gbm.brokeragefirmapi.port.primary.SendOrderServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.gbm.brokeragefirmapi.CreateAccountRestMapper.accountFrom;
 import static com.gbm.brokeragefirmapi.CreateAccountRestMapper.createAccountResponseFrom;
 import static com.gbm.brokeragefirmapi.SendOrderRestMapper.orderFrom;
@@ -20,7 +22,7 @@ public class AccountRestControllerAdapter {
     private final SendOrderServicePort sendOrderServicePort;
 
     @PostMapping("/accounts")
-    public CreateAccountResponse createInvestmentAccount(final @RequestBody CreateAccountRequest createAccountRequest) {
+    public CreateAccountResponse createInvestmentAccount(final @Valid @RequestBody CreateAccountRequest createAccountRequest) {
 
         final Account account = this.createInvestmentAccountServicePort
                 .createInvestmentAccount(accountFrom(createAccountRequest));
@@ -29,7 +31,7 @@ public class AccountRestControllerAdapter {
     }
 
     @PostMapping("accounts/{id}/orders")
-    public SendOrderResponse sendOrder(final @PathVariable Long id, final @RequestBody SendOrderRequest sendOrderRequest) {
+    public SendOrderResponse sendOrder(final @PathVariable Long id, final @Valid @RequestBody SendOrderRequest sendOrderRequest) {
 
         final var processedOrder = this.sendOrderServicePort.sendOrder(orderFrom(sendOrderRequest, id));
 

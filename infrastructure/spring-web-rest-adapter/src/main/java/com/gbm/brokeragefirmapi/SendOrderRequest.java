@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Data
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class SendOrderRequest {
 
+    @Positive
     private Long timestamp;
 
     private OrderOperation operation;
@@ -20,9 +22,11 @@ public class SendOrderRequest {
     @JsonProperty("issuer_name")
     private String issuerName;
 
+    @Positive
     @JsonProperty("total_shares")
     private Integer totalShares;
 
+    @Positive
     @JsonProperty("share_price")
     private BigDecimal sharePrice;
 
