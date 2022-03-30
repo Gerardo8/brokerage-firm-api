@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -16,13 +18,10 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @Entity
 @Table(name = "ACCOUNTS")
-public class AccountJpaEntity {
+public class AccountJpaEntity implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-
-    public AccountJpaEntity(final BigDecimal cash) {
-        this.cash = cash;
-    }
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
+import static com.gbm.brokeragefirmapi.AccountJpaMapper.accountFrom;
 import static com.gbm.brokeragefirmapi.AccountJpaMapper.accountJpaEntityFrom;
 
 @Component
@@ -21,6 +24,13 @@ public class AccountJpaRepositoryAdapter implements AccountRepositoryPort {
         final AccountJpaEntity accountJpaEntity = accountJpaEntityFrom(account);
         this.accountJpaRepository.save(accountJpaEntity);
 
-        return AccountJpaMapper.accountFrom(accountJpaEntity);
+        return accountFrom(accountJpaEntity);
+    }
+
+    @Override
+    public Optional<Account> findAccountById(final Long id) {
+
+        return this.accountJpaRepository.findById(id)
+                .map(AccountJpaMapper::accountFrom);
     }
 }

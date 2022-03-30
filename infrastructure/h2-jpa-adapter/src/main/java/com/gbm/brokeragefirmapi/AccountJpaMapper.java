@@ -22,7 +22,7 @@ public class AccountJpaMapper {
 
     public static AccountJpaEntity accountJpaEntityFrom(final Account account) {
 
-        return new AccountJpaEntity(account.getCash());
+        return new AccountJpaEntity(account.getId(), account.getCash());
     }
 
 }
