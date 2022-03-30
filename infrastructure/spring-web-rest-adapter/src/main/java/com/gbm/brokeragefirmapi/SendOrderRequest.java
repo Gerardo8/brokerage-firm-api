@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import static java.time.ZoneId.systemDefault;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +18,7 @@ import java.math.BigDecimal;
 public class SendOrderRequest {
 
     @Positive
-    private Long timestamp;
+    private Long timestamp = LocalDateTime.now().atZone(systemDefault()).toInstant().toEpochMilli();
 
     private OrderOperation operation;
 
