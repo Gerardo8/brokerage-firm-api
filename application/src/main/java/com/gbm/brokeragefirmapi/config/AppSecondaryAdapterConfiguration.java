@@ -1,10 +1,7 @@
 package com.gbm.brokeragefirmapi.config;
 
 import com.gbm.brokeragefirmapi.*;
-import com.gbm.brokeragefirmapi.port.secondary.AccountRepositoryPort;
-import com.gbm.brokeragefirmapi.port.secondary.IssuerRepositoryPort;
-import com.gbm.brokeragefirmapi.port.secondary.OrderRepositoryPort;
-import com.gbm.brokeragefirmapi.port.secondary.StockRepositoryPort;
+import com.gbm.brokeragefirmapi.port.secondary.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +14,7 @@ public class AppSecondaryAdapterConfiguration {
     private final IssuerJpaRepository issuerJpaRepository;
     private final OrderJpaRepository orderJpaRepository;
     private final StockJpaRepository stockJpaRepository;
+    private final IssuerTransactionRedisRepository issuerTransactionRedisRepository;
 
     @Bean
     public AccountRepositoryPort accountRepositoryPort() {
@@ -40,5 +38,11 @@ public class AppSecondaryAdapterConfiguration {
     public StockRepositoryPort stockRepositoryPort() {
 
         return new StockJpaRepositoryAdapter(this.stockJpaRepository);
+    }
+
+    @Bean
+    public IssuerTransactionRepositoryPort issuerTransactionRepositoryPort() {
+
+        return new IssuerTransactionRedisRepositoryAdapter(this.issuerTransactionRedisRepository);
     }
 }

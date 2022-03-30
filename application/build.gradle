@@ -27,6 +27,7 @@ dependencies {
     implementation project(':application-core')
     implementation project(':infrastructure:h2-jpa-adapter')
     implementation project(':infrastructure:spring-web-rest-adapter')
+    implementation project(':infrastructure:spring-data-redis-adapter')
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
