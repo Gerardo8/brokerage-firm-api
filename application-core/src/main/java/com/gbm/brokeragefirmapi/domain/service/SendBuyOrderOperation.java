@@ -16,47 +16,43 @@ import java.util.ArrayList;
 import static com.gbm.brokeragefirmapi.domain.factory.IssuerFactory.createIssuerFrom;
 import static com.gbm.brokeragefirmapi.domain.factory.IssuerFactory.createIssuerWithTotalShares;
 import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.INSUFFICIENT_BALANCE;
+import static java.util.Collections.singletonList;
 
 @RequiredArgsConstructor
-public class SendBuyOrderService {
+public class SendBuyOrderOperation implements SendOrderOperation {
 
     private final OrderRepositoryPort orderRepositoryPort;
     private final IssuerRepositoryPort issuerRepositoryPort;
     private final AccountRepositoryPort accountRepositoryPort;
 
-    public ProcessedOrder sendOrder(final Order order, final Stock stock, final Account accountById) {
-
-        final var processedOrder = new ProcessedOrder();
+    @Override
+    public ProcessedOrder sendOrder(final Order order, final Stock stock, final Account account) {
 
         final var totalAmount = stock.getSharePrice().multiply(BigDecimal.valueOf(order.getTotalShares()));
-        final var newCash = accountById.getCash().subtract(totalAmount);
+        final var newCash = account.getCash().subtract(totalAmount);
 
         if (newCash.intValue() >= 0) {
 
-            accountById.setCash(newCash);
-            order.setAccount(accountById);
-            this.accountRepositoryPort.createAccount(accountById);
+            account.setCash(newCash);
+            order.setAccount(account);
+            this.accountRepositoryPort.createAccount(account);
             this.orderRepositoryPort.createOrder(order);
 
             final var optionalIssuer = this.issuerRepositoryPort
-                    .findByAccountIdAndStockId(accountById.getId(), stock.getId());
+                    .findByAccountIdAndStockId(account.getId(), stock.getId());
 
             final var issuer = optionalIssuer.isPresent() ?
                     createIssuerWithTotalShares(optionalIssuer.get(), order.getTotalShares()) :
-                    createIssuerFrom(accountById, stock, order);
+                    createIssuerFrom(account, stock, order);
 
             this.issuerRepositoryPort.createIssuer(issuer);
 
-            final var issuers = this.issuerRepositoryPort.findAllByAccountId(accountById.getId());
+            final var issuers = this.issuerRepositoryPort.findAllByAccountId(account.getId());
 
-            processedOrder.setCurrentBalance(new CurrentBalance(newCash, issuers));
+            return new ProcessedOrder(new CurrentBalance(newCash, issuers), new ArrayList<>());
 
-        } else {
-
-            processedOrder.setCurrentBalance(new CurrentBalance(accountById.getCash(), new ArrayList<>()));
-            processedOrder.getBusinessErrors().add(INSUFFICIENT_BALANCE);
         }
 
-        return processedOrder;
+        return new ProcessedOrder(new CurrentBalance(account.getCash(), new ArrayList<>()), singletonList(INSUFFICIENT_BALANCE));
     }
 }

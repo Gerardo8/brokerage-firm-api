@@ -12,7 +12,8 @@ public class SendOrderService implements SendOrderServicePort {
 
     private final AccountRepositoryPort accountRepositoryPort;
     private final StockRepositoryPort stockRepositoryPort;
-    private final SendBuyOrderService sendBuyOrderService;
+    private final SendBuyOrderOperation sendBuyOrderOperation;
+    private final SendSellOrderOperation sendSellOrderOperation;
 
     @Override
     public ProcessedOrder sendOrder(final Order order) {
@@ -29,8 +30,8 @@ public class SendOrderService implements SendOrderServicePort {
                 .orElseThrow();
 
         return switch (order.getOperation()) {
-            case BUY -> this.sendBuyOrderService.sendOrder(order, stock, accountById);
-            case SELL -> new ProcessedOrder();
+            case BUY -> this.sendBuyOrderOperation.sendOrder(order, stock, accountById);
+            case SELL -> this.sendSellOrderOperation.sendOrder(order, stock, accountById);
         };
 
     }

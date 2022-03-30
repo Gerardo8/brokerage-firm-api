@@ -1,8 +1,9 @@
 package com.gbm.brokeragefirmapi.config;
 
 import com.gbm.brokeragefirmapi.domain.service.CreateInvestmentAccountService;
-import com.gbm.brokeragefirmapi.domain.service.SendBuyOrderService;
+import com.gbm.brokeragefirmapi.domain.service.SendBuyOrderOperation;
 import com.gbm.brokeragefirmapi.domain.service.SendOrderService;
+import com.gbm.brokeragefirmapi.domain.service.SendSellOrderOperation;
 import com.gbm.brokeragefirmapi.port.primary.CreateInvestmentAccountServicePort;
 import com.gbm.brokeragefirmapi.port.primary.SendOrderServicePort;
 import com.gbm.brokeragefirmapi.port.secondary.AccountRepositoryPort;
@@ -34,7 +35,8 @@ public class AppPrimaryAdapterConfiguration {
         return new SendOrderService(
                 this.accountRepositoryPort,
                 this.stockRepositoryPort,
-                new SendBuyOrderService(this.orderRepositoryPort, this.issuerRepositoryPort, this.accountRepositoryPort)
+                new SendBuyOrderOperation(this.orderRepositoryPort, this.issuerRepositoryPort, this.accountRepositoryPort),
+                new SendSellOrderOperation(this.orderRepositoryPort, this.issuerRepositoryPort, this.accountRepositoryPort)
         );
     }
 }

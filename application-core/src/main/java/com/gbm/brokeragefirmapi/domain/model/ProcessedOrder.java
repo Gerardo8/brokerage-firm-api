@@ -1,20 +1,21 @@
 package com.gbm.brokeragefirmapi.domain.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProcessedOrder {
 
     private CurrentBalance currentBalance;
 
-    private List<BusinessError> businessErrors = new ArrayList<>();
+    private List<BusinessError> businessErrors;
 
     @Data
     @AllArgsConstructor
