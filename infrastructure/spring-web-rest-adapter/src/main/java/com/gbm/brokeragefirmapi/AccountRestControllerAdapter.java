@@ -2,14 +2,14 @@ package com.gbm.brokeragefirmapi;
 
 import com.gbm.brokeragefirmapi.domain.model.Account;
 import com.gbm.brokeragefirmapi.port.primary.CreateInvestmentAccountServicePort;
+import com.gbm.brokeragefirmapi.port.primary.SendOrderServicePort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static com.gbm.brokeragefirmapi.AccountRestMapper.accountFrom;
-import static com.gbm.brokeragefirmapi.AccountRestMapper.createAccountResponseFrom;
+import static com.gbm.brokeragefirmapi.CreateAccountRestMapper.accountFrom;
+import static com.gbm.brokeragefirmapi.CreateAccountRestMapper.createAccountResponseFrom;
+import static com.gbm.brokeragefirmapi.SendOrderRestMapper.orderFrom;
+import static com.gbm.brokeragefirmapi.SendOrderRestMapper.sendOrderResponseFrom;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -17,6 +17,7 @@ import static com.gbm.brokeragefirmapi.AccountRestMapper.createAccountResponseFr
 public class AccountRestControllerAdapter {
 
     private final CreateInvestmentAccountServicePort createInvestmentAccountServicePort;
+    private final SendOrderServicePort sendOrderServicePort;
 
     @PostMapping("/accounts")
     public CreateAccountResponse createInvestmentAccount(final @RequestBody CreateAccountRequest createAccountRequest) {
@@ -25,5 +26,13 @@ public class AccountRestControllerAdapter {
                 .createInvestmentAccount(accountFrom(createAccountRequest));
 
         return createAccountResponseFrom(account);
+    }
+
+    @PostMapping("accounts/{id}/orders")
+    public SendOrderResponse sendOrder(final @PathVariable Long id, final @RequestBody SendOrderRequest sendOrderRequest) {
+
+        final var processedOrder = this.sendOrderServicePort.sendOrder(orderFrom(sendOrderRequest, id));
+
+        return sendOrderResponseFrom(processedOrder);
     }
 }

@@ -6,17 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class CreateAccountResponse {
+@AllArgsConstructor
+public class IssuerDto {
 
-    private Long id;
+    private String issuerName;
 
-    private BigDecimal cash;
+    private Integer totalShares;
 
-    private List<IssuerDto> issuers;
+    private BigDecimal sharePrice;
+
 }
