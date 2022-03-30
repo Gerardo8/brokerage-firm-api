@@ -7,6 +7,13 @@ import com.gbm.brokeragefirmapi.port.secondary.AccountRepositoryPort;
 import com.gbm.brokeragefirmapi.port.secondary.StockRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
+
+import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.CLOSE_MARKET;
+import static com.gbm.brokeragefirmapi.utils.SendOrderConstants.SIX_AM;
+import static com.gbm.brokeragefirmapi.utils.SendOrderConstants.THREE_PM;
+import static java.util.Collections.singletonList;
+
 @RequiredArgsConstructor
 public class SendOrderService implements SendOrderServicePort {
 
@@ -18,16 +25,23 @@ public class SendOrderService implements SendOrderServicePort {
     @Override
     public ProcessedOrder sendOrder(final Order order) {
 
+        final var time = order.getTimestamp().toLocalTime();
+
+        final var accountById = this.accountRepositoryPort
+                .findAccountById(order.getAccount().getId())
+                .orElseThrow();
+
+        if (!time.isAfter(SIX_AM) || !time.isBefore(THREE_PM)) {
+
+            return new ProcessedOrder(new ProcessedOrder.CurrentBalance(accountById.getCash(), new ArrayList<>()), singletonList(CLOSE_MARKET));
+        }
+
         final var stock = this.stockRepositoryPort
                 .findByIssuerName(order.getIssuerName())
                 .orElseThrow();
 
         order.setIssuerName(stock.getIssuerName());
         order.setSharePrice(stock.getSharePrice());
-
-        final var accountById = this.accountRepositoryPort
-                .findAccountById(order.getAccount().getId())
-                .orElseThrow();
 
         return switch (order.getOperation()) {
             case BUY -> this.sendBuyOrderOperation.sendOrder(order, stock, accountById);
