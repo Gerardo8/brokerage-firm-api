@@ -4,8 +4,8 @@ import com.gbm.brokeragefirmapi.domain.service.CreateInvestmentAccountService;
 import com.gbm.brokeragefirmapi.domain.service.SendBuyOrderOperation;
 import com.gbm.brokeragefirmapi.domain.service.SendOrderService;
 import com.gbm.brokeragefirmapi.domain.service.SendSellOrderOperation;
-import com.gbm.brokeragefirmapi.port.primary.CreateInvestmentAccountServicePort;
-import com.gbm.brokeragefirmapi.port.primary.SendOrderServicePort;
+import com.gbm.brokeragefirmapi.port.primary.CreateInvestmentAccountUseCase;
+import com.gbm.brokeragefirmapi.port.primary.SendOrderUseCase;
 import com.gbm.brokeragefirmapi.port.secondary.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -15,36 +15,36 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class AppPrimaryAdapterConfiguration {
 
-    private final AccountRepositoryPort accountRepositoryPort;
-    private final StockRepositoryPort stockRepositoryPort;
-    private final OrderRepositoryPort orderRepositoryPort;
-    private final IssuerRepositoryPort issuerRepositoryPort;
-    private final IssuerTransactionRepositoryPort issuerTransactionRepositoryPort;
+    private final AccountRepository accountRepository;
+    private final StockRepository stockRepository;
+    private final OrderRepository orderRepository;
+    private final IssuerRepository issuerRepository;
+    private final IssuerTransactionRepository issuerTransactionRepository;
 
     @Bean
-    public CreateInvestmentAccountServicePort createInvestmentAccountServicePort() {
+    public CreateInvestmentAccountUseCase createInvestmentAccountServicePort() {
 
-        return new CreateInvestmentAccountService(this.accountRepositoryPort);
+        return new CreateInvestmentAccountService(this.accountRepository);
     }
 
     @Bean
-    public SendOrderServicePort sendOrderServicePort() {
+    public SendOrderUseCase sendOrderServicePort() {
 
         return new SendOrderService(
-                this.accountRepositoryPort,
-                this.stockRepositoryPort,
-                this.issuerTransactionRepositoryPort,
+                this.accountRepository,
+                this.stockRepository,
+                this.issuerTransactionRepository,
                 new SendBuyOrderOperation(
-                        this.orderRepositoryPort,
-                        this.issuerRepositoryPort,
-                        this.accountRepositoryPort,
-                        this.issuerTransactionRepositoryPort
+                        this.orderRepository,
+                        this.issuerRepository,
+                        this.accountRepository,
+                        this.issuerTransactionRepository
                 ),
                 new SendSellOrderOperation(
-                        this.orderRepositoryPort,
-                        this.issuerRepositoryPort,
-                        this.accountRepositoryPort,
-                        this.issuerTransactionRepositoryPort
+                        this.orderRepository,
+                        this.issuerRepository,
+                        this.accountRepository,
+                        this.issuerTransactionRepository
                 )
         );
     }

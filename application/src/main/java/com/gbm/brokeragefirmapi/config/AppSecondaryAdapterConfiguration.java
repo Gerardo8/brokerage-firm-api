@@ -17,31 +17,31 @@ public class AppSecondaryAdapterConfiguration {
     private final IssuerTransactionRedisRepository issuerTransactionRedisRepository;
 
     @Bean
-    public AccountRepositoryPort accountRepositoryPort() {
+    public AccountRepository accountRepositoryPort() {
 
         return new AccountJpaRepositoryAdapter(this.accountJpaRepository);
     }
 
     @Bean
-    public IssuerRepositoryPort issuerRepositoryPort() {
+    public IssuerRepository issuerRepositoryPort() {
 
         return new IssuerJpaRepositoryAdapter(this.issuerJpaRepository);
     }
 
     @Bean
-    public OrderRepositoryPort orderRepositoryPort() {
+    public OrderRepository orderRepositoryPort() {
 
         return new OrderJpaRepositoryAdapter(this.orderJpaRepository);
     }
 
     @Bean
-    public StockRepositoryPort stockRepositoryPort() {
+    public StockRepository stockRepositoryPort() {
 
         return new StockJpaRepositoryAdapter(this.stockJpaRepository);
     }
 
     @Bean
-    public IssuerTransactionRepositoryPort issuerTransactionRepositoryPort() {
+    public IssuerTransactionRepository issuerTransactionRepositoryPort() {
 
         return new IssuerTransactionRedisRepositoryAdapter(this.issuerTransactionRedisRepository);
     }

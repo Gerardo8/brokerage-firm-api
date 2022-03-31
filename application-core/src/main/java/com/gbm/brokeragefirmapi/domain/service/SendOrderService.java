@@ -3,10 +3,10 @@ package com.gbm.brokeragefirmapi.domain.service;
 import com.gbm.brokeragefirmapi.domain.model.Account;
 import com.gbm.brokeragefirmapi.domain.model.Order;
 import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder;
-import com.gbm.brokeragefirmapi.port.primary.SendOrderServicePort;
-import com.gbm.brokeragefirmapi.port.secondary.AccountRepositoryPort;
-import com.gbm.brokeragefirmapi.port.secondary.IssuerTransactionRepositoryPort;
-import com.gbm.brokeragefirmapi.port.secondary.StockRepositoryPort;
+import com.gbm.brokeragefirmapi.port.primary.SendOrderUseCase;
+import com.gbm.brokeragefirmapi.port.secondary.AccountRepository;
+import com.gbm.brokeragefirmapi.port.secondary.IssuerTransactionRepository;
+import com.gbm.brokeragefirmapi.port.secondary.StockRepository;
 import lombok.RequiredArgsConstructor;
 
 import static com.gbm.brokeragefirmapi.domain.factory.IssuerTransactionFactory.createIssuerTransactionId;
@@ -16,11 +16,11 @@ import static com.gbm.brokeragefirmapi.utils.SendOrderConstants.SIX_AM;
 import static com.gbm.brokeragefirmapi.utils.SendOrderConstants.THREE_PM;
 
 @RequiredArgsConstructor
-public class SendOrderService implements SendOrderServicePort {
+public class SendOrderService implements SendOrderUseCase {
 
-    private final AccountRepositoryPort accountRepositoryPort;
-    private final StockRepositoryPort stockRepositoryPort;
-    private final IssuerTransactionRepositoryPort issuerTransactionRepositoryPort;
+    private final AccountRepository accountRepository;
+    private final StockRepository stockRepository;
+    private final IssuerTransactionRepository issuerTransactionRepository;
     private final SendBuyOrderOperation sendBuyOrderOperation;
     private final SendSellOrderOperation sendSellOrderOperation;
 
@@ -29,7 +29,7 @@ public class SendOrderService implements SendOrderServicePort {
 
         final var time = order.getTimestamp().toLocalTime();
 
-        final var optionalAccount = this.accountRepositoryPort
+        final var optionalAccount = this.accountRepository
                 .findAccountById(order.getAccount().getId());
 
         if (optionalAccount.isEmpty()) {
@@ -44,12 +44,12 @@ public class SendOrderService implements SendOrderServicePort {
             return createFailedProcessedOrder(account, CLOSE_MARKET);
         }
 
-        if (this.issuerTransactionRepositoryPort.findById(createIssuerTransactionId(order)).isPresent()) {
+        if (this.issuerTransactionRepository.findById(createIssuerTransactionId(order)).isPresent()) {
 
             return createFailedProcessedOrder(account, DUPLICATE_OPERATION);
         }
 
-        final var optionalStock = this.stockRepositoryPort
+        final var optionalStock = this.stockRepository
                 .findByIssuerName(order.getIssuerName());
 
         if (optionalStock.isEmpty()) {

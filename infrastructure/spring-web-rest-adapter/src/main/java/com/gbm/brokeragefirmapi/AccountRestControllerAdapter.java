@@ -1,8 +1,8 @@
 package com.gbm.brokeragefirmapi;
 
 import com.gbm.brokeragefirmapi.domain.model.Account;
-import com.gbm.brokeragefirmapi.port.primary.CreateInvestmentAccountServicePort;
-import com.gbm.brokeragefirmapi.port.primary.SendOrderServicePort;
+import com.gbm.brokeragefirmapi.port.primary.CreateInvestmentAccountUseCase;
+import com.gbm.brokeragefirmapi.port.primary.SendOrderUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,14 +19,14 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequiredArgsConstructor
 public class AccountRestControllerAdapter {
 
-    private final CreateInvestmentAccountServicePort createInvestmentAccountServicePort;
-    private final SendOrderServicePort sendOrderServicePort;
+    private final CreateInvestmentAccountUseCase createInvestmentAccountUseCase;
+    private final SendOrderUseCase sendOrderUseCase;
 
     @PostMapping("/accounts")
     @ResponseStatus(CREATED)
     public CreateAccountResponse createInvestmentAccount(final @Valid @RequestBody CreateAccountRequest createAccountRequest) {
 
-        final Account account = this.createInvestmentAccountServicePort
+        final Account account = this.createInvestmentAccountUseCase
                 .createInvestmentAccount(accountFrom(createAccountRequest));
 
         return createAccountResponseFrom(account);
@@ -35,7 +35,7 @@ public class AccountRestControllerAdapter {
     @PostMapping("accounts/{id}/orders")
     public SendOrderResponse sendOrder(final @PathVariable Long id, final @Valid @RequestBody SendOrderRequest sendOrderRequest) {
 
-        final var processedOrder = this.sendOrderServicePort.sendOrder(orderFrom(sendOrderRequest, id));
+        final var processedOrder = this.sendOrderUseCase.sendOrder(orderFrom(sendOrderRequest, id));
 
         return sendOrderResponseFrom(processedOrder);
     }

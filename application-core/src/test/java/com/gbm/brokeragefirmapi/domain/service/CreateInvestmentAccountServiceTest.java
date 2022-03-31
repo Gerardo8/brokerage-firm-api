@@ -1,7 +1,7 @@
 package com.gbm.brokeragefirmapi.domain.service;
 
 import com.gbm.brokeragefirmapi.domain.model.Account;
-import com.gbm.brokeragefirmapi.port.secondary.AccountRepositoryPort;
+import com.gbm.brokeragefirmapi.port.secondary.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,20 +21,20 @@ class CreateInvestmentAccountServiceTest {
     private CreateInvestmentAccountService createInvestmentAccountService;
 
     @Mock
-    private AccountRepositoryPort accountRepositoryPort;
+    private AccountRepository accountRepository;
 
     @BeforeEach
     void setUp() {
 
         openMocks(this);
 
-        this.createInvestmentAccountService = new CreateInvestmentAccountService(this.accountRepositoryPort);
+        this.createInvestmentAccountService = new CreateInvestmentAccountService(this.accountRepository);
     }
 
     @Test
     void createInvestmentAccount() {
 
-        when(this.accountRepositoryPort.createAccount(any(Account.class)))
+        when(this.accountRepository.createAccount(any(Account.class)))
                 .thenReturn(createMockAccountWithId());
 
         final Account mockAccount = createMockAccount();

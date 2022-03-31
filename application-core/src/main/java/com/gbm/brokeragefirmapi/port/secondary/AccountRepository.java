@@ -4,7 +4,7 @@ import com.gbm.brokeragefirmapi.domain.model.Account;
 
 import java.util.Optional;
 
-public interface AccountRepositoryPort {
+public interface AccountRepository {
 
     Account createAccount(Account account);
 

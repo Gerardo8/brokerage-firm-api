@@ -5,10 +5,10 @@ import com.gbm.brokeragefirmapi.domain.model.Order;
 import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder;
 import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.CurrentBalance;
 import com.gbm.brokeragefirmapi.domain.model.Stock;
-import com.gbm.brokeragefirmapi.port.secondary.AccountRepositoryPort;
-import com.gbm.brokeragefirmapi.port.secondary.IssuerRepositoryPort;
-import com.gbm.brokeragefirmapi.port.secondary.IssuerTransactionRepositoryPort;
-import com.gbm.brokeragefirmapi.port.secondary.OrderRepositoryPort;
+import com.gbm.brokeragefirmapi.port.secondary.AccountRepository;
+import com.gbm.brokeragefirmapi.port.secondary.IssuerRepository;
+import com.gbm.brokeragefirmapi.port.secondary.IssuerTransactionRepository;
+import com.gbm.brokeragefirmapi.port.secondary.OrderRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
@@ -21,15 +21,15 @@ import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError
 @RequiredArgsConstructor
 public class SendSellOrderOperation implements SendOrderOperation {
 
-    private final OrderRepositoryPort orderRepositoryPort;
-    private final IssuerRepositoryPort issuerRepositoryPort;
-    private final AccountRepositoryPort accountRepositoryPort;
-    private final IssuerTransactionRepositoryPort issuerTransactionRepositoryPort;
+    private final OrderRepository orderRepository;
+    private final IssuerRepository issuerRepository;
+    private final AccountRepository accountRepository;
+    private final IssuerTransactionRepository issuerTransactionRepository;
 
     @Override
     public ProcessedOrder sendOrder(final Order order, final Stock stock, final Account account) {
 
-        final var optionalIssuer = this.issuerRepositoryPort
+        final var optionalIssuer = this.issuerRepository
                 .findByAccountIdAndStockId(account.getId(), stock.getId());
 
         if (optionalIssuer.isPresent()) {
@@ -47,15 +47,15 @@ public class SendSellOrderOperation implements SendOrderOperation {
 
             account.setCash(newCash);
             order.setAccount(account);
-            this.accountRepositoryPort.createAccount(account);
-            this.orderRepositoryPort.createOrder(order);
+            this.accountRepository.createAccount(account);
+            this.orderRepository.createOrder(order);
 
             issuer.setTotalShares(totalShares);
 
-            this.issuerRepositoryPort.createIssuer(issuer);
-            this.issuerTransactionRepositoryPort.createIssuerTransaction(createIssuerTransaction(order));
+            this.issuerRepository.createIssuer(issuer);
+            this.issuerTransactionRepository.createIssuerTransaction(createIssuerTransaction(order));
 
-            final var issuers = this.issuerRepositoryPort.findAllByAccountId(account.getId());
+            final var issuers = this.issuerRepository.findAllByAccountId(account.getId());
 
             return new ProcessedOrder(new CurrentBalance(newCash, issuers), new ArrayList<>());
         }

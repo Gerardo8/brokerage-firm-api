@@ -5,7 +5,7 @@ import com.gbm.brokeragefirmapi.domain.model.Issuer;
 import java.util.List;
 import java.util.Optional;
 
-public interface IssuerRepositoryPort {
+public interface IssuerRepository {
 
     Optional<Issuer> findByAccountIdAndStockId(Long accountId, Integer stockId);
 

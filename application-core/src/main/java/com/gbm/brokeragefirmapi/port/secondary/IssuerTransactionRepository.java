@@ -4,7 +4,7 @@ import com.gbm.brokeragefirmapi.domain.model.IssuerTransaction;
 
 import java.util.Optional;
 
-public interface IssuerTransactionRepositoryPort {
+public interface IssuerTransactionRepository {
 
     Optional<IssuerTransaction> findById(String id);
 
