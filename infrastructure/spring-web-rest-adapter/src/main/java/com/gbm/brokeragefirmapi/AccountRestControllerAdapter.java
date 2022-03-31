@@ -12,6 +12,7 @@ import static com.gbm.brokeragefirmapi.CreateAccountRestMapper.accountFrom;
 import static com.gbm.brokeragefirmapi.CreateAccountRestMapper.createAccountResponseFrom;
 import static com.gbm.brokeragefirmapi.SendOrderRestMapper.orderFrom;
 import static com.gbm.brokeragefirmapi.SendOrderRestMapper.sendOrderResponseFrom;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -22,6 +23,7 @@ public class AccountRestControllerAdapter {
     private final SendOrderServicePort sendOrderServicePort;
 
     @PostMapping("/accounts")
+    @ResponseStatus(CREATED)
     public CreateAccountResponse createInvestmentAccount(final @Valid @RequestBody CreateAccountRequest createAccountRequest) {
 
         final Account account = this.createInvestmentAccountServicePort
