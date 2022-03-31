@@ -6,7 +6,7 @@ import org.mockito.Mock;
 
 import java.util.Optional;
 
-import static com.gbm.brokeragefirmapi.factory.AccountJpaMockFactory.*;
+import static com.gbm.brokeragefirmapi.factory.AccountJpaRepositoryMockFactory.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

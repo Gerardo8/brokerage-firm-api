@@ -6,8 +6,8 @@ import org.mockito.Mock;
 
 import java.util.Optional;
 
-import static com.gbm.brokeragefirmapi.factory.StockJpaMockFactory.ISSUER_NAME;
-import static com.gbm.brokeragefirmapi.factory.StockJpaMockFactory.createMockStockJpaEntity;
+import static com.gbm.brokeragefirmapi.factory.StockJpaRepositoryMockFactory.ISSUER_NAME;
+import static com.gbm.brokeragefirmapi.factory.StockJpaRepositoryMockFactory.createMockStockJpaEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

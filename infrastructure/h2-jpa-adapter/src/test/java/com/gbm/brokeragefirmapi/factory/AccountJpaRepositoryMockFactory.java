@@ -5,7 +5,7 @@ import com.gbm.brokeragefirmapi.domain.model.Account;
 
 import java.math.BigDecimal;
 
-public class AccountJpaMockFactory {
+public class AccountJpaRepositoryMockFactory {
 
     public static final Long ACCOUNT_ID = 1L;
 

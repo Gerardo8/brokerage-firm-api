@@ -6,9 +6,9 @@ import org.mockito.Mock;
 
 import java.util.Optional;
 
-import static com.gbm.brokeragefirmapi.factory.AccountJpaMockFactory.ACCOUNT_ID;
-import static com.gbm.brokeragefirmapi.factory.IssuerJpaMockFactory.*;
-import static com.gbm.brokeragefirmapi.factory.StockJpaMockFactory.STOCK_ID;
+import static com.gbm.brokeragefirmapi.factory.AccountJpaRepositoryMockFactory.ACCOUNT_ID;
+import static com.gbm.brokeragefirmapi.factory.IssuerJpaRepositoryMockFactory.*;
+import static com.gbm.brokeragefirmapi.factory.StockJpaRepositoryMockFactory.STOCK_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

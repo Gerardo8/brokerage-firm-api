@@ -5,7 +5,7 @@ import com.gbm.brokeragefirmapi.domain.model.Stock;
 
 import java.math.BigDecimal;
 
-public class StockJpaMockFactory {
+public class StockJpaRepositoryMockFactory {
 
     public static final Integer STOCK_ID = 1;
     public static final String ISSUER_NAME = "AAPL";

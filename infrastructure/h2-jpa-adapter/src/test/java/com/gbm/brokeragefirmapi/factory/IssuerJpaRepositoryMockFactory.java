@@ -5,14 +5,14 @@ import com.gbm.brokeragefirmapi.domain.model.Issuer;
 
 import java.util.List;
 
-import static com.gbm.brokeragefirmapi.factory.AccountJpaMockFactory.crateMockAccountJpaEntity;
-import static com.gbm.brokeragefirmapi.factory.AccountJpaMockFactory.createMockAccount;
-import static com.gbm.brokeragefirmapi.factory.OrderJpaMockFactory.TOTAL_SHARES;
-import static com.gbm.brokeragefirmapi.factory.StockJpaMockFactory.createMockStock;
-import static com.gbm.brokeragefirmapi.factory.StockJpaMockFactory.createMockStockJpaEntity;
+import static com.gbm.brokeragefirmapi.factory.AccountJpaRepositoryMockFactory.crateMockAccountJpaEntity;
+import static com.gbm.brokeragefirmapi.factory.AccountJpaRepositoryMockFactory.createMockAccount;
+import static com.gbm.brokeragefirmapi.factory.OrderJpaRepositoryMockFactory.TOTAL_SHARES;
+import static com.gbm.brokeragefirmapi.factory.StockJpaRepositoryMockFactory.createMockStock;
+import static com.gbm.brokeragefirmapi.factory.StockJpaRepositoryMockFactory.createMockStockJpaEntity;
 import static java.util.Collections.singletonList;
 
-public class IssuerJpaMockFactory {
+public class IssuerJpaRepositoryMockFactory {
 
     public static final Integer ISSUER_ID = 1;
 

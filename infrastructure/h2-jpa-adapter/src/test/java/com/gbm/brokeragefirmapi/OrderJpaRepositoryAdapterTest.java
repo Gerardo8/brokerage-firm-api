@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import static com.gbm.brokeragefirmapi.factory.OrderJpaMockFactory.createMockOrder;
+import static com.gbm.brokeragefirmapi.factory.OrderJpaRepositoryMockFactory.createMockOrder;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
