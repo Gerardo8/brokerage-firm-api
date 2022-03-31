@@ -1,6 +1,5 @@
 package com.gbm.brokeragefirmapi.domain.service;
 
-import com.gbm.brokeragefirmapi.domain.model.Account;
 import com.gbm.brokeragefirmapi.domain.model.Order;
 import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder;
 import com.gbm.brokeragefirmapi.port.primary.SendOrderUseCase;
@@ -9,6 +8,7 @@ import com.gbm.brokeragefirmapi.port.secondary.IssuerTransactionRepository;
 import com.gbm.brokeragefirmapi.port.secondary.StockRepository;
 import lombok.RequiredArgsConstructor;
 
+import static com.gbm.brokeragefirmapi.domain.factory.AccountFactory.createDefaultAccount;
 import static com.gbm.brokeragefirmapi.domain.factory.IssuerTransactionFactory.createIssuerTransactionId;
 import static com.gbm.brokeragefirmapi.domain.factory.ProcessedOrderFactory.createFailedProcessedOrder;
 import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.*;
@@ -34,7 +34,7 @@ public class SendOrderService implements SendOrderUseCase {
 
         if (optionalAccount.isEmpty()) {
 
-            return createFailedProcessedOrder(new Account(), INVALID_OPERATION);
+            return createFailedProcessedOrder(createDefaultAccount(), INVALID_OPERATION);
         }
 
         final var account = optionalAccount.get();
