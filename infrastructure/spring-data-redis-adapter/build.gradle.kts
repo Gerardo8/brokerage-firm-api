@@ -8,6 +8,10 @@ plugins {
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
 }
 
+tasks.named<Jar>("bootJar") {
+    enabled = false
+}
+
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_14
