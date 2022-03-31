@@ -44,7 +44,9 @@ public class SendOrderService implements SendOrderUseCase {
             return createFailedProcessedOrder(account, CLOSE_MARKET);
         }
 
-        if (this.issuerTransactionRepository.findById(createIssuerTransactionId(order)).isPresent()) {
+        final var optionalIssuerTransaction = this.issuerTransactionRepository.findById(createIssuerTransactionId(order));
+
+        if (optionalIssuerTransaction.isPresent()) {
 
             return createFailedProcessedOrder(account, DUPLICATE_OPERATION);
         }
