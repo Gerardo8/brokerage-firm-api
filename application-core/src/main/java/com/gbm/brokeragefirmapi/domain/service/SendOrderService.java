@@ -1,5 +1,6 @@
 package com.gbm.brokeragefirmapi.domain.service;
 
+import com.gbm.brokeragefirmapi.domain.model.Account;
 import com.gbm.brokeragefirmapi.domain.model.Order;
 import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder;
 import com.gbm.brokeragefirmapi.port.primary.SendOrderServicePort;
@@ -10,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 import static com.gbm.brokeragefirmapi.domain.factory.IssuerTransactionFactory.createIssuerTransactionId;
 import static com.gbm.brokeragefirmapi.domain.factory.ProcessedOrderFactory.createFailedProcessedOrder;
-import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.CLOSE_MARKET;
-import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.DUPLICATE_OPERATION;
+import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.*;
 import static com.gbm.brokeragefirmapi.utils.SendOrderConstants.SIX_AM;
 import static com.gbm.brokeragefirmapi.utils.SendOrderConstants.THREE_PM;
 
@@ -29,30 +29,42 @@ public class SendOrderService implements SendOrderServicePort {
 
         final var time = order.getTimestamp().toLocalTime();
 
-        final var accountById = this.accountRepositoryPort
-                .findAccountById(order.getAccount().getId())
-                .orElseThrow();
+        final var optionalAccount = this.accountRepositoryPort
+                .findAccountById(order.getAccount().getId());
+
+        if (optionalAccount.isEmpty()) {
+
+            return createFailedProcessedOrder(new Account(), INVALID_OPERATION);
+        }
+
+        final var account = optionalAccount.get();
 
         if (!time.isAfter(SIX_AM) || !time.isBefore(THREE_PM)) {
 
-            return createFailedProcessedOrder(accountById, CLOSE_MARKET);
+            return createFailedProcessedOrder(account, CLOSE_MARKET);
         }
 
         if (this.issuerTransactionRepositoryPort.findById(createIssuerTransactionId(order)).isPresent()) {
 
-            return createFailedProcessedOrder(accountById, DUPLICATE_OPERATION);
+            return createFailedProcessedOrder(account, DUPLICATE_OPERATION);
         }
 
-        final var stock = this.stockRepositoryPort
-                .findByIssuerName(order.getIssuerName())
-                .orElseThrow();
+        final var optionalStock = this.stockRepositoryPort
+                .findByIssuerName(order.getIssuerName());
+
+        if (optionalStock.isEmpty()) {
+
+            return createFailedProcessedOrder(account, INVALID_OPERATION);
+        }
+
+        final var stock = optionalStock.get();
 
         order.setIssuerName(stock.getIssuerName());
         order.setSharePrice(stock.getSharePrice());
 
         return switch (order.getOperation()) {
-            case BUY -> this.sendBuyOrderOperation.sendOrder(order, stock, accountById);
-            case SELL -> this.sendSellOrderOperation.sendOrder(order, stock, accountById);
+            case BUY -> this.sendBuyOrderOperation.sendOrder(order, stock, account);
+            case SELL -> this.sendSellOrderOperation.sendOrder(order, stock, account);
         };
 
     }
