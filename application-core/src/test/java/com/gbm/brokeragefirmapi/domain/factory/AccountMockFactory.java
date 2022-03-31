@@ -5,7 +5,7 @@ import com.gbm.brokeragefirmapi.domain.model.Account;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class AccountTestMockFactory {
+public class AccountMockFactory {
 
     public static Account createMockAccount() {
 
