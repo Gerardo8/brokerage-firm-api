@@ -22,13 +22,13 @@ public class AppPrimaryAdapterConfiguration {
     private final IssuerTransactionRepository issuerTransactionRepository;
 
     @Bean
-    public CreateInvestmentAccountUseCase createInvestmentAccountServicePort() {
+    public CreateInvestmentAccountUseCase createInvestmentAccountUseCase() {
 
         return new CreateInvestmentAccountService(this.accountRepository);
     }
 
     @Bean
-    public SendOrderUseCase sendOrderServicePort() {
+    public SendOrderUseCase sendOrderUseCase() {
 
         return new SendOrderService(
                 this.accountRepository,
