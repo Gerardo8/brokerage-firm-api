@@ -18,8 +18,10 @@ import static java.time.ZoneId.systemDefault;
 public class SendOrderRequest {
 
     @Positive
+    @JsonProperty("timestamp")
     private Long timestamp = LocalDateTime.now().atZone(systemDefault()).toInstant().toEpochMilli();
 
+    @JsonProperty("operation")
     private OrderOperation operation;
 
     @JsonProperty("issuer_name")

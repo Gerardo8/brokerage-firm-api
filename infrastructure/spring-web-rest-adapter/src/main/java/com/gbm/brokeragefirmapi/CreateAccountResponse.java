@@ -1,5 +1,6 @@
 package com.gbm.brokeragefirmapi;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateAccountResponse {
 
+    @JsonProperty("id")
     private Long id;
 
+    @JsonProperty("cash")
     private BigDecimal cash;
 
+    @JsonProperty("issuers")
     private List<IssuerDto> issuers;
 }

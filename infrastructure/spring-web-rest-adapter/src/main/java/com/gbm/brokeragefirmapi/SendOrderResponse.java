@@ -1,5 +1,6 @@
 package com.gbm.brokeragefirmapi;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,8 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 public class SendOrderResponse {
 
+    @JsonProperty("current_balance")
     private CurrentBalanceDto currentBalance;
 
+    @JsonProperty("business_errors")
     private List<BusinessError> businessErrors = new ArrayList<>();
 
     @Data
@@ -23,8 +26,10 @@ public class SendOrderResponse {
     @NoArgsConstructor
     public static class CurrentBalanceDto {
 
+        @JsonProperty("cash")
         private BigDecimal cash;
 
+        @JsonProperty("issuers")
         private List<IssuerDto> issuers;
 
     }
