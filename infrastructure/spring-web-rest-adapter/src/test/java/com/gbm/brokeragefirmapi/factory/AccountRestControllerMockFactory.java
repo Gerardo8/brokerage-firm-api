@@ -28,7 +28,6 @@ public class AccountRestControllerMockFactory {
     public static final Integer ISSUER_ID = 1;
     public static final Integer STOCK_ID = 1;
     public static final Long TIMESTAMP = LocalDateTime.of(LocalDate.now(), NOON).atZone(systemDefault()).toInstant().toEpochMilli();
-    ;
 
     public static CreateAccountRequest createMockCreateAccountRequest() {
 
