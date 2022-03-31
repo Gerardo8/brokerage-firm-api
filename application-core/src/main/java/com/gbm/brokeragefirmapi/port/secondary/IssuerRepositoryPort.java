@@ -9,7 +9,7 @@ public interface IssuerRepositoryPort {
 
     Optional<Issuer> findByAccountIdAndStockId(Long accountId, Integer stockId);
 
-    Issuer createIssuer(Issuer issuer);
+    void createIssuer(Issuer issuer);
 
     List<Issuer> findAllByAccountId(Long accountId);
 }

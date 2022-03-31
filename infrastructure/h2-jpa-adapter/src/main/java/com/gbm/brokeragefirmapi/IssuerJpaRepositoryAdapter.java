@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.gbm.brokeragefirmapi.IssuerJpaMapper.issuerFrom;
 import static com.gbm.brokeragefirmapi.IssuerJpaMapper.issuerJpaEntityFrom;
 import static java.util.stream.Collectors.toList;
 
@@ -28,11 +27,10 @@ public class IssuerJpaRepositoryAdapter implements IssuerRepositoryPort {
     }
 
     @Override
-    public Issuer createIssuer(final Issuer issuer) {
+    public void createIssuer(final Issuer issuer) {
 
-        final var issuerJpaEntity = this.issuerJpaRepository.save(issuerJpaEntityFrom(issuer));
-
-        return issuerFrom(issuerJpaEntity);
+        final var issuerJpaEntity = issuerJpaEntityFrom(issuer);
+        this.issuerJpaRepository.save(issuerJpaEntity);
     }
 
     @Override
