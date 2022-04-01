@@ -61,7 +61,7 @@ class AccountRestControllerAdapterTest {
     }
 
     @Test
-    void sendOrder() throws Exception {
+    void sendOrder_shouldReturnHttpStatusOk_whenOrderIsCreated() throws Exception {
 
         when(this.sendOrderUseCase.sendOrder(any(Order.class)))
                 .thenReturn(createMockProcessedOrder());
