@@ -5,7 +5,6 @@ import com.gbm.brokeragefirmapi.domain.model.Account;
 import com.gbm.brokeragefirmapi.domain.model.Order;
 import com.gbm.brokeragefirmapi.port.primary.CreateInvestmentAccountUseCase;
 import com.gbm.brokeragefirmapi.port.primary.SendOrderUseCase;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -37,10 +36,6 @@ class AccountRestControllerAdapterTest {
 
     @MockBean
     private SendOrderUseCase sendOrderUseCase;
-
-    @BeforeEach
-    void setUp() {
-    }
 
     @Test
     void createInvestmentAccount_shouldReturnHttpStatusCreated_whenAccountIsCreated() throws Exception {
