@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.gbm.brokeragefirmapi.domain.factory.AccountMockFactory.createMockAccount;
-import static com.gbm.brokeragefirmapi.domain.factory.AccountMockFactory.createMockAccountWithId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -35,7 +34,7 @@ class CreateInvestmentAccountServiceTest {
     void createInvestmentAccount() {
 
         when(this.accountRepository.createAccount(any(Account.class)))
-                .thenReturn(createMockAccountWithId());
+                .thenReturn(createMockAccount());
 
         final Account mockAccount = createMockAccount();
 

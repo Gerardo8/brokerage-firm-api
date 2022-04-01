@@ -7,15 +7,15 @@ import java.util.ArrayList;
 
 public class AccountMockFactory {
 
-    public static Account createMockAccount() {
+    public static Account createMockAccountWithoutEnoughCash() {
 
         return Account
                 .builder()
-                .cash(new BigDecimal(1_000))
+                .cash(new BigDecimal(5))
                 .build();
     }
 
-    public static Account createMockAccountWithId() {
+    public static Account createMockAccount() {
 
         return Account
                 .builder()
