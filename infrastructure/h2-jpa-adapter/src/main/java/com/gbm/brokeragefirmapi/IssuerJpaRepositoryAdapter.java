@@ -3,7 +3,6 @@ package com.gbm.brokeragefirmapi;
 import com.gbm.brokeragefirmapi.domain.model.Issuer;
 import com.gbm.brokeragefirmapi.port.secondary.IssuerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.Optional;
 import static com.gbm.brokeragefirmapi.IssuerJpaMapper.issuerJpaEntityFrom;
 import static java.util.stream.Collectors.toList;
 
-@Component
 @Transactional
 @RequiredArgsConstructor
 public class IssuerJpaRepositoryAdapter implements IssuerRepository {

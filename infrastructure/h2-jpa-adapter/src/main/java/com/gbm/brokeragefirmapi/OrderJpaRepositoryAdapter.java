@@ -3,12 +3,10 @@ package com.gbm.brokeragefirmapi;
 import com.gbm.brokeragefirmapi.domain.model.Order;
 import com.gbm.brokeragefirmapi.port.secondary.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.gbm.brokeragefirmapi.OrderJpaMapper.orderJpaEntityFrom;
 
-@Component
 @Transactional
 @RequiredArgsConstructor
 public class OrderJpaRepositoryAdapter implements OrderRepository {

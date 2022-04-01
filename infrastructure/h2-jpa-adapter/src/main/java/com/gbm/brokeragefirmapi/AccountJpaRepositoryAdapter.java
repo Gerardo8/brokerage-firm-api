@@ -3,7 +3,6 @@ package com.gbm.brokeragefirmapi;
 import com.gbm.brokeragefirmapi.domain.model.Account;
 import com.gbm.brokeragefirmapi.port.secondary.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -11,7 +10,6 @@ import java.util.Optional;
 import static com.gbm.brokeragefirmapi.AccountJpaMapper.accountFrom;
 import static com.gbm.brokeragefirmapi.AccountJpaMapper.accountJpaEntityFrom;
 
-@Component
 @Transactional
 @RequiredArgsConstructor
 public class AccountJpaRepositoryAdapter implements AccountRepository {
