@@ -1,24 +1,18 @@
 package com.gbm.brokeragefirmapi.domain.service;
 
-import com.gbm.brokeragefirmapi.domain.model.Account;
-import com.gbm.brokeragefirmapi.domain.model.Order;
-import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder;
-import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.CurrentBalance;
-import com.gbm.brokeragefirmapi.domain.model.Stock;
+import com.gbm.brokeragefirmapi.domain.model.*;
 import com.gbm.brokeragefirmapi.port.secondary.AccountRepository;
 import com.gbm.brokeragefirmapi.port.secondary.IssuerRepository;
 import com.gbm.brokeragefirmapi.port.secondary.IssuerTransactionRepository;
 import com.gbm.brokeragefirmapi.port.secondary.OrderRepository;
-import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static com.gbm.brokeragefirmapi.domain.factory.IssuerTransactionFactory.createIssuerTransaction;
 import static com.gbm.brokeragefirmapi.domain.factory.ProcessedOrderFactory.createFailedProcessedOrder;
-import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.INSUFFICIENT_STOCKS;
+import static com.gbm.brokeragefirmapi.domain.model.BusinessError.INSUFFICIENT_STOCKS;
 
-@RequiredArgsConstructor
 public class SendSellOrderOperation implements SendOrderOperation {
 
     private final OrderRepository orderRepository;
@@ -26,11 +20,18 @@ public class SendSellOrderOperation implements SendOrderOperation {
     private final AccountRepository accountRepository;
     private final IssuerTransactionRepository issuerTransactionRepository;
 
+    public SendSellOrderOperation(OrderRepository orderRepository, IssuerRepository issuerRepository, AccountRepository accountRepository, IssuerTransactionRepository issuerTransactionRepository) {
+        this.orderRepository = orderRepository;
+        this.issuerRepository = issuerRepository;
+        this.accountRepository = accountRepository;
+        this.issuerTransactionRepository = issuerTransactionRepository;
+    }
+
     @Override
     public ProcessedOrder sendOrder(final Order order, final Stock stock, final Account account) {
 
         final var optionalIssuer = this.issuerRepository
-                .findByAccountIdAndStockId(account.getId(), stock.getId());
+                .findByAccountIdAndStockId(account.getId(), stock.id());
 
         if (optionalIssuer.isPresent()) {
 
@@ -42,7 +43,7 @@ public class SendSellOrderOperation implements SendOrderOperation {
                 return createFailedProcessedOrder(account, INSUFFICIENT_STOCKS);
             }
 
-            final var totalAmount = stock.getSharePrice().multiply(BigDecimal.valueOf(order.getTotalShares()));
+            final var totalAmount = stock.sharePrice().multiply(BigDecimal.valueOf(order.getTotalShares()));
             final var newCash = account.getCash().add(totalAmount);
 
             account.setCash(newCash);

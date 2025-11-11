@@ -1,12 +1,12 @@
 package com.gbm.brokeragefirmapi;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter

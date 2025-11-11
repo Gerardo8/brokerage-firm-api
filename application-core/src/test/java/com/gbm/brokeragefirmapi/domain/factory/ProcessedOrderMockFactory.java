@@ -1,7 +1,7 @@
 package com.gbm.brokeragefirmapi.domain.factory;
 
+import com.gbm.brokeragefirmapi.domain.model.CurrentBalance;
 import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder;
-import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.CurrentBalance;
 
 import java.math.BigDecimal;
 

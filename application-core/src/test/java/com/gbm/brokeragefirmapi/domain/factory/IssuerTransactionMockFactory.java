@@ -3,7 +3,7 @@ package com.gbm.brokeragefirmapi.domain.factory;
 import com.gbm.brokeragefirmapi.domain.model.IssuerTransaction;
 import com.gbm.brokeragefirmapi.domain.model.Order;
 
-import static com.gbm.brokeragefirmapi.domain.model.Order.OrderOperation.BUY;
+import static com.gbm.brokeragefirmapi.domain.model.OrderOperation.BUY;
 
 public class IssuerTransactionMockFactory {
 

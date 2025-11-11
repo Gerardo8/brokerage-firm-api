@@ -2,7 +2,7 @@ package com.gbm.brokeragefirmapi.factory;
 
 import com.gbm.brokeragefirmapi.IssuerTransactionRedisEntity
 import com.gbm.brokeragefirmapi.domain.model.IssuerTransaction
-import com.gbm.brokeragefirmapi.domain.model.Order.OrderOperation.BUY
+import com.gbm.brokeragefirmapi.domain.model.OrderOperation.BUY
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit.MINUTES

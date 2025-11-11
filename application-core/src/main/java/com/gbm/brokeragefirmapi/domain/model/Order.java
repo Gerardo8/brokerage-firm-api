@@ -1,16 +1,16 @@
 package com.gbm.brokeragefirmapi.domain.model;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Order {
-
     private LocalDateTime timestamp;
 
     private OrderOperation operation;
@@ -23,31 +23,4 @@ public class Order {
 
     private Account account;
 
-    @RequiredArgsConstructor
-    public enum OrderOperation {
-
-        SELL("SELL"),
-
-        BUY("BUY");
-
-        private final String value;
-
-        public String getValue() {
-
-            return this.value;
-        }
-
-        public static OrderOperation fromValue(final String value) {
-
-            for (OrderOperation orderOperation : OrderOperation.values()) {
-                if (orderOperation.value.equals(value)) {
-
-                    return orderOperation;
-                }
-            }
-
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-
-    }
 }

@@ -14,12 +14,12 @@ public class IssuerJpaMapper {
 
     public static Issuer issuerFrom(final IssuerJpaEntity issuerJpaEntity) {
 
-        return Issuer.builder()
-                .id(issuerJpaEntity.getId())
-                .totalShares(issuerJpaEntity.getTotalShares())
-                .account(accountFrom(issuerJpaEntity.getAccount()))
-                .stock(stockFrom(issuerJpaEntity.getStock()))
-                .build();
+        return new Issuer(
+                issuerJpaEntity.getId(),
+                issuerJpaEntity.getTotalShares(),
+                accountFrom(issuerJpaEntity.getAccount()),
+                stockFrom(issuerJpaEntity.getStock())
+        );
     }
 
     public static IssuerJpaEntity issuerJpaEntityFrom(final Issuer issuer) {

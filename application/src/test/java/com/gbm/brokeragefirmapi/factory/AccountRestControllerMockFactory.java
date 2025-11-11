@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static com.gbm.brokeragefirmapi.domain.model.Order.OrderOperation.BUY;
+import static com.gbm.brokeragefirmapi.domain.model.OrderOperation.BUY;
 import static java.time.LocalTime.NOON;
 import static java.time.ZoneId.systemDefault;
 import static java.util.Collections.emptyList;
@@ -33,31 +33,30 @@ public class AccountRestControllerMockFactory {
 
     public static Account createMockAccount() {
 
-        return Account
-                .builder()
-                .id(ACCOUNT_ID)
-                .cash(CASH)
-                .issuers(emptyList())
-                .build();
+        return new Account(
+                ACCOUNT_ID,
+                CASH,
+                emptyList()
+        );
     }
 
     public static Stock createMockStock() {
 
-        return Stock.builder()
-                .id(STOCK_ID)
-                .issuerName(ISSUER_NAME)
-                .sharePrice(SHARE_PRICE)
-                .build();
+        return new Stock(
+                STOCK_ID,
+                ISSUER_NAME,
+                SHARE_PRICE
+        );
     }
 
     public static Issuer createMockIssuer() {
 
-        return Issuer.builder()
-                .id(ISSUER_ID)
-                .account(createMockAccount())
-                .stock(createMockStock())
-                .totalShares(TOTAL_SHARES)
-                .build();
+        return new Issuer(
+                ISSUER_ID,
+                TOTAL_SHARES,
+                createMockAccount(),
+                createMockStock()
+        );
     }
 
     public static SendOrderRequest createMockSendOrderRequest() {

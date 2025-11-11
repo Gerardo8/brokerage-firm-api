@@ -1,6 +1,6 @@
 package com.gbm.brokeragefirmapi
 
-import com.gbm.brokeragefirmapi.domain.model.Order.OrderOperation
+import com.gbm.brokeragefirmapi.domain.model.OrderOperation
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash
 import org.springframework.data.redis.core.TimeToLive

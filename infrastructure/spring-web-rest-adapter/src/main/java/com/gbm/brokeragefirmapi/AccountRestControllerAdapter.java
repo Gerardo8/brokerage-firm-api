@@ -3,10 +3,9 @@ package com.gbm.brokeragefirmapi;
 import com.gbm.brokeragefirmapi.domain.model.Account;
 import com.gbm.brokeragefirmapi.port.primary.CreateInvestmentAccountUseCase;
 import com.gbm.brokeragefirmapi.port.primary.SendOrderUseCase;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 import static com.gbm.brokeragefirmapi.CreateAccountRestMapper.accountFrom;
 import static com.gbm.brokeragefirmapi.CreateAccountRestMapper.createAccountResponseFrom;

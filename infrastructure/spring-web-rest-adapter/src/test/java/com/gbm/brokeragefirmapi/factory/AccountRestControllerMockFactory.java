@@ -5,14 +5,14 @@ import com.gbm.brokeragefirmapi.SendOrderRequest;
 import com.gbm.brokeragefirmapi.domain.model.Account;
 import com.gbm.brokeragefirmapi.domain.model.Issuer;
 import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder;
-import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.CurrentBalance;
+import com.gbm.brokeragefirmapi.domain.model.CurrentBalance;
 import com.gbm.brokeragefirmapi.domain.model.Stock;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static com.gbm.brokeragefirmapi.domain.model.Order.OrderOperation.BUY;
+import static com.gbm.brokeragefirmapi.domain.model.OrderOperation.BUY;
 import static java.time.LocalTime.NOON;
 import static java.time.ZoneId.systemDefault;
 import static java.util.Collections.emptyList;

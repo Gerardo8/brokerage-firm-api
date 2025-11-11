@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static com.gbm.brokeragefirmapi.domain.factory.AccountMockFactory.createMockAccount;
-import static com.gbm.brokeragefirmapi.domain.model.Order.OrderOperation.BUY;
-import static com.gbm.brokeragefirmapi.domain.model.Order.OrderOperation.SELL;
+import static com.gbm.brokeragefirmapi.domain.model.OrderOperation.BUY;
+import static com.gbm.brokeragefirmapi.domain.model.OrderOperation.SELL;
 import static java.time.LocalTime.MIDNIGHT;
 import static java.time.LocalTime.NOON;
 

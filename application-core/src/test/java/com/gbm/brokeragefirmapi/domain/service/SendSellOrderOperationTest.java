@@ -18,7 +18,7 @@ import static com.gbm.brokeragefirmapi.domain.factory.AccountMockFactory.createM
 import static com.gbm.brokeragefirmapi.domain.factory.IssuerMockFactory.*;
 import static com.gbm.brokeragefirmapi.domain.factory.OrderMockFactory.createMockSellOrder;
 import static com.gbm.brokeragefirmapi.domain.factory.StockMockFactory.createMockStock;
-import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.INSUFFICIENT_STOCKS;
+import static com.gbm.brokeragefirmapi.domain.model.BusinessError.INSUFFICIENT_STOCKS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -61,7 +61,7 @@ class SendSellOrderOperationTest {
         final var mockStock = createMockStock();
         final var mockOrder = createMockSellOrder();
 
-        when(this.issuerRepository.findByAccountIdAndStockId(mockAccount.getId(), mockStock.getId()))
+        when(this.issuerRepository.findByAccountIdAndStockId(mockAccount.getId(), mockStock.id()))
                 .thenReturn(Optional.of(createMockIssuer()));
 
         when(this.issuerRepository.findAllByAccountId(mockAccount.getId()))
@@ -71,12 +71,12 @@ class SendSellOrderOperationTest {
                 .sendOrder(mockOrder, mockStock, mockAccount);
 
         assertThat(processedOrder).isNotNull();
-        assertThat(processedOrder.getCurrentBalance().getCash()).isPositive();
-        assertThat(processedOrder.getCurrentBalance().getIssuers()).isNotEmpty();
-        assertThat(processedOrder.getBusinessErrors()).isEmpty();
+        assertThat(processedOrder.currentBalance().cash()).isPositive();
+        assertThat(processedOrder.currentBalance().issuers()).isNotEmpty();
+        assertThat(processedOrder.businessErrors()).isEmpty();
 
         verify(this.issuerRepository).findAllByAccountId(mockAccount.getId());
-        verify(this.issuerRepository).findByAccountIdAndStockId(mockAccount.getId(), mockStock.getId());
+        verify(this.issuerRepository).findByAccountIdAndStockId(mockAccount.getId(), mockStock.id());
         verify(this.issuerRepository).createIssuer(any(Issuer.class));
         verify(this.orderRepository).createOrder(any(Order.class));
         verify(this.accountRepository).createAccount(any(Account.class));
@@ -90,19 +90,19 @@ class SendSellOrderOperationTest {
         final var mockStock = createMockStock();
         final var mockOrder = createMockSellOrder();
 
-        when(this.issuerRepository.findByAccountIdAndStockId(mockAccount.getId(), mockStock.getId()))
+        when(this.issuerRepository.findByAccountIdAndStockId(mockAccount.getId(), mockStock.id()))
                 .thenReturn(Optional.empty());
 
         final var processedOrder = this.sendSellOrderOperation
                 .sendOrder(mockOrder, mockStock, mockAccount);
 
         assertThat(processedOrder).isNotNull();
-        assertThat(processedOrder.getCurrentBalance().getCash()).isEqualTo(mockAccount.getCash());
-        assertThat(processedOrder.getCurrentBalance().getIssuers()).isEmpty();
-        assertThat(processedOrder.getBusinessErrors()).isNotEmpty();
-        assertThat(processedOrder.getBusinessErrors().get(0)).isEqualTo(INSUFFICIENT_STOCKS);
+        assertThat(processedOrder.currentBalance().cash()).isEqualTo(mockAccount.getCash());
+        assertThat(processedOrder.currentBalance().issuers()).isEmpty();
+        assertThat(processedOrder.businessErrors()).isNotEmpty();
+        assertThat(processedOrder.businessErrors().get(0)).isEqualTo(INSUFFICIENT_STOCKS);
 
-        verify(this.issuerRepository).findByAccountIdAndStockId(mockAccount.getId(), mockStock.getId());
+        verify(this.issuerRepository).findByAccountIdAndStockId(mockAccount.getId(), mockStock.id());
     }
 
     @Test
@@ -112,18 +112,18 @@ class SendSellOrderOperationTest {
         final var mockStock = createMockStock();
         final var mockOrder = createMockSellOrder();
 
-        when(this.issuerRepository.findByAccountIdAndStockId(mockAccount.getId(), mockStock.getId()))
+        when(this.issuerRepository.findByAccountIdAndStockId(mockAccount.getId(), mockStock.id()))
                 .thenReturn(Optional.of(createMockIssuerWithoutAvailableStocks()));
 
         final var processedOrder = this.sendSellOrderOperation
                 .sendOrder(mockOrder, mockStock, mockAccount);
 
         assertThat(processedOrder).isNotNull();
-        assertThat(processedOrder.getCurrentBalance().getCash()).isEqualTo(mockAccount.getCash());
-        assertThat(processedOrder.getCurrentBalance().getIssuers()).isEmpty();
-        assertThat(processedOrder.getBusinessErrors()).isNotEmpty();
-        assertThat(processedOrder.getBusinessErrors().get(0)).isEqualTo(INSUFFICIENT_STOCKS);
+        assertThat(processedOrder.currentBalance().cash()).isEqualTo(mockAccount.getCash());
+        assertThat(processedOrder.currentBalance().issuers()).isEmpty();
+        assertThat(processedOrder.businessErrors()).isNotEmpty();
+        assertThat(processedOrder.businessErrors().get(0)).isEqualTo(INSUFFICIENT_STOCKS);
 
-        verify(this.issuerRepository).findByAccountIdAndStockId(mockAccount.getId(), mockStock.getId());
+        verify(this.issuerRepository).findByAccountIdAndStockId(mockAccount.getId(), mockStock.id());
     }
 }

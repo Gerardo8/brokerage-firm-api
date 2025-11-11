@@ -10,19 +10,19 @@ public class StockJpaMapper {
 
     public static Stock stockFrom(final StockJpaEntity stockJpaEntity) {
 
-        return Stock.builder()
-                .id(stockJpaEntity.getId())
-                .issuerName(stockJpaEntity.getIssuerName())
-                .sharePrice(stockJpaEntity.getSharePrice())
-                .build();
+        return new Stock(
+                stockJpaEntity.getId(),
+                stockJpaEntity.getIssuerName(),
+                stockJpaEntity.getSharePrice()
+        );
     }
 
     public static StockJpaEntity stockJpaEntityFrom(final Stock stock) {
 
         return StockJpaEntity.builder()
-                .id(stock.getId())
-                .issuerName(stock.getIssuerName())
-                .sharePrice(stock.getSharePrice())
+                .id(stock.id())
+                .issuerName(stock.issuerName())
+                .sharePrice(stock.sharePrice())
                 .build();
     }
 }

@@ -1,30 +1,24 @@
 package com.gbm.brokeragefirmapi.domain.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class IssuerTransaction {
+public record IssuerTransaction(
+        String id,
 
-    private String id;
+        String issuerName,
 
-    private LocalDateTime timestamp;
+        Integer totalShares,
 
-    private Order.OrderOperation operation;
+        BigDecimal sharePrice,
 
-    private String issuerName;
+        LocalDateTime timestamp,
 
-    private Integer totalShares;
+        OrderOperation operation,
 
-    private BigDecimal sharePrice;
-
-    private Long timeToLive;
+        Long timeToLive
+) {
 }

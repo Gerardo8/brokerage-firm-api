@@ -1,8 +1,8 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.springframework.boot' version '2.6.5'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '3.5.7'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 application {
@@ -11,7 +11,12 @@ application {
 
 group 'com.gbm'
 version '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_14
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(24)
+    }
+}
 
 configurations {
     compileOnly {
@@ -28,7 +33,6 @@ dependencies {
     implementation project(':infrastructure:h2-jpa-adapter')
     implementation project(':infrastructure:spring-web-rest-adapter')
     implementation project(':infrastructure:spring-data-redis-adapter')
-
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.springframework.boot:spring-boot-starter-web'

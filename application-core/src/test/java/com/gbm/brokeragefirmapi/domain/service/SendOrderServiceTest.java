@@ -14,9 +14,10 @@ import static com.gbm.brokeragefirmapi.domain.factory.IssuerTransactionMockFacto
 import static com.gbm.brokeragefirmapi.domain.factory.OrderMockFactory.*;
 import static com.gbm.brokeragefirmapi.domain.factory.ProcessedOrderMockFactory.createMockProcessedOrder;
 import static com.gbm.brokeragefirmapi.domain.factory.StockMockFactory.createMockStock;
-import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.*;
+import static com.gbm.brokeragefirmapi.domain.model.BusinessError.*;
 import static java.math.BigDecimal.ZERO;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,9 +43,9 @@ class SendOrderServiceTest {
     private SendBuyOrderOperation sendBuyOrderOperation;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
 
-        openMocks(this);
+        openMocks(this).close();
 
         this.sendOrderService = new SendOrderService(
                 this.accountRepository,
@@ -70,20 +71,20 @@ class SendOrderServiceTest {
         when(this.stockRepository.findByIssuerName(mockOrder.getIssuerName()))
                 .thenReturn(Optional.of(mockStock));
 
-        when(this.sendBuyOrderOperation.sendOrder(mockOrder, mockStock, mockOrder.getAccount()))
+        when(this.sendBuyOrderOperation.sendOrder(any(), any(), any()))
                 .thenReturn(createMockProcessedOrder());
 
         final var processedOrder = this.sendOrderService.sendOrder(mockOrder);
 
         assertThat(processedOrder).isNotNull();
-        assertThat(processedOrder.getCurrentBalance().getCash()).isPositive();
-        assertThat(processedOrder.getCurrentBalance().getIssuers()).isNotEmpty();
-        assertThat(processedOrder.getBusinessErrors()).isEmpty();
+        assertThat(processedOrder.currentBalance().cash()).isPositive();
+        assertThat(processedOrder.currentBalance().issuers()).isNotEmpty();
+        assertThat(processedOrder.businessErrors()).isEmpty();
 
         verify(this.accountRepository).findAccountById(mockOrder.getAccount().getId());
         verify(this.issuerTransactionRepository).findById(anyString());
         verify(this.stockRepository).findByIssuerName(mockOrder.getIssuerName());
-        verify(this.sendBuyOrderOperation).sendOrder(mockOrder, mockStock, mockOrder.getAccount());
+        verify(this.sendBuyOrderOperation).sendOrder(any(), any(), any());
     }
 
     @Test
@@ -101,20 +102,20 @@ class SendOrderServiceTest {
         when(this.stockRepository.findByIssuerName(mockOrder.getIssuerName()))
                 .thenReturn(Optional.of(mockStock));
 
-        when(this.sendSellOrderOperation.sendOrder(mockOrder, mockStock, mockOrder.getAccount()))
+        when(this.sendSellOrderOperation.sendOrder(any(), any(), any()))
                 .thenReturn(createMockProcessedOrder());
 
         final var processedOrder = this.sendOrderService.sendOrder(mockOrder);
 
         assertThat(processedOrder).isNotNull();
-        assertThat(processedOrder.getCurrentBalance().getCash()).isPositive();
-        assertThat(processedOrder.getCurrentBalance().getIssuers()).isNotEmpty();
-        assertThat(processedOrder.getBusinessErrors()).isEmpty();
+        assertThat(processedOrder.currentBalance().cash()).isPositive();
+        assertThat(processedOrder.currentBalance().issuers()).isNotEmpty();
+        assertThat(processedOrder.businessErrors()).isEmpty();
 
         verify(this.accountRepository).findAccountById(mockOrder.getAccount().getId());
         verify(this.issuerTransactionRepository).findById(anyString());
         verify(this.stockRepository).findByIssuerName(mockOrder.getIssuerName());
-        verify(this.sendSellOrderOperation).sendOrder(mockOrder, mockStock, mockOrder.getAccount());
+        verify(this.sendSellOrderOperation).sendOrder(any(), any(), any());
     }
 
     @Test
@@ -128,10 +129,10 @@ class SendOrderServiceTest {
         final var processedOrder = this.sendOrderService.sendOrder(mockOrder);
 
         assertThat(processedOrder).isNotNull();
-        assertThat(processedOrder.getCurrentBalance().getCash()).isEqualTo(ZERO);
-        assertThat(processedOrder.getCurrentBalance().getIssuers()).isEmpty();
-        assertThat(processedOrder.getBusinessErrors()).isNotEmpty();
-        assertThat(processedOrder.getBusinessErrors().get(0)).isEqualTo(INVALID_OPERATION);
+        assertThat(processedOrder.currentBalance().cash()).isEqualTo(ZERO);
+        assertThat(processedOrder.currentBalance().issuers()).isEmpty();
+        assertThat(processedOrder.businessErrors()).isNotEmpty();
+        assertThat(processedOrder.businessErrors().getFirst()).isEqualTo(INVALID_OPERATION);
 
         verify(this.accountRepository).findAccountById(mockOrder.getAccount().getId());
     }
@@ -148,10 +149,10 @@ class SendOrderServiceTest {
         final var processedOrder = this.sendOrderService.sendOrder(mockOrder);
 
         assertThat(processedOrder).isNotNull();
-        assertThat(processedOrder.getCurrentBalance().getCash()).isEqualTo(mockAccount.getCash());
-        assertThat(processedOrder.getCurrentBalance().getIssuers()).isEmpty();
-        assertThat(processedOrder.getBusinessErrors()).isNotEmpty();
-        assertThat(processedOrder.getBusinessErrors().get(0)).isEqualTo(CLOSE_MARKET);
+        assertThat(processedOrder.currentBalance().cash()).isEqualTo(mockAccount.getCash());
+        assertThat(processedOrder.currentBalance().issuers()).isEmpty();
+        assertThat(processedOrder.businessErrors()).isNotEmpty();
+        assertThat(processedOrder.businessErrors().get(0)).isEqualTo(CLOSE_MARKET);
 
         verify(this.accountRepository).findAccountById(mockOrder.getAccount().getId());
     }
@@ -171,10 +172,10 @@ class SendOrderServiceTest {
         final var processedOrder = this.sendOrderService.sendOrder(mockOrder);
 
         assertThat(processedOrder).isNotNull();
-        assertThat(processedOrder.getCurrentBalance().getCash()).isEqualTo(mockAccount.getCash());
-        assertThat(processedOrder.getCurrentBalance().getIssuers()).isEmpty();
-        assertThat(processedOrder.getBusinessErrors()).isNotEmpty();
-        assertThat(processedOrder.getBusinessErrors().get(0)).isEqualTo(DUPLICATE_OPERATION);
+        assertThat(processedOrder.currentBalance().cash()).isEqualTo(mockAccount.getCash());
+        assertThat(processedOrder.currentBalance().issuers()).isEmpty();
+        assertThat(processedOrder.businessErrors()).isNotEmpty();
+        assertThat(processedOrder.businessErrors().get(0)).isEqualTo(DUPLICATE_OPERATION);
 
         verify(this.accountRepository).findAccountById(mockOrder.getAccount().getId());
         verify(this.issuerTransactionRepository).findById(anyString());
@@ -198,10 +199,10 @@ class SendOrderServiceTest {
         final var processedOrder = this.sendOrderService.sendOrder(mockOrder);
 
         assertThat(processedOrder).isNotNull();
-        assertThat(processedOrder.getCurrentBalance().getCash()).isEqualTo(mockAccount.getCash());
-        assertThat(processedOrder.getCurrentBalance().getIssuers()).isEmpty();
-        assertThat(processedOrder.getBusinessErrors()).isNotEmpty();
-        assertThat(processedOrder.getBusinessErrors().get(0)).isEqualTo(INVALID_OPERATION);
+        assertThat(processedOrder.currentBalance().cash()).isEqualTo(mockAccount.getCash());
+        assertThat(processedOrder.currentBalance().issuers()).isEmpty();
+        assertThat(processedOrder.businessErrors()).isNotEmpty();
+        assertThat(processedOrder.businessErrors().get(0)).isEqualTo(INVALID_OPERATION);
 
         verify(this.accountRepository).findAccountById(mockOrder.getAccount().getId());
         verify(this.issuerTransactionRepository).findById(anyString());

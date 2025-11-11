@@ -1,22 +1,29 @@
 package com.gbm.brokeragefirmapi.domain.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Issuer {
+public final class Issuer {
 
     private Integer id;
-
     private Integer totalShares;
-
     private Account account;
-
     private Stock stock;
 
+    public Issuer(Integer id, Integer totalShares, Account account, Stock stock) {
+        this.id = id;
+        this.totalShares = totalShares;
+        this.account = account;
+        this.stock = stock;
+    }
+
+    public Issuer(Integer totalShares, Account account, Stock stock) {
+        this.totalShares = totalShares;
+        this.account = account;
+        this.stock = stock;
+    }
 }

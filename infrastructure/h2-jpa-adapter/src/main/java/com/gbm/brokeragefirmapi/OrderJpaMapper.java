@@ -1,13 +1,11 @@
 package com.gbm.brokeragefirmapi;
 
 import com.gbm.brokeragefirmapi.domain.model.Order;
-import lombok.NoArgsConstructor;
+import com.gbm.brokeragefirmapi.domain.model.OrderOperation;
 
 import static com.gbm.brokeragefirmapi.AccountJpaMapper.accountFrom;
 import static com.gbm.brokeragefirmapi.AccountJpaMapper.accountJpaEntityFrom;
-import static lombok.AccessLevel.PRIVATE;
 
-@NoArgsConstructor(access = PRIVATE)
 public class OrderJpaMapper {
 
     public static OrderJpaEntity orderJpaEntityFrom(final Order order) {
@@ -29,7 +27,7 @@ public class OrderJpaMapper {
                 .totalShares(orderJpaEntity.getTotalShares())
                 .sharePrice(orderJpaEntity.getSharePrice())
                 .issuerName(orderJpaEntity.getIssuerName())
-                .operation(Order.OrderOperation.fromValue(orderJpaEntity.getOrderOperation()))
+                .operation(OrderOperation.fromValue(orderJpaEntity.getOrderOperation()))
                 .timestamp(orderJpaEntity.getOperationDate())
                 .build();
     }

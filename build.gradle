@@ -4,6 +4,11 @@ plugins {
 
 group = 'com.gbm'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_14
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(24)
+    }
+}
 
 defaultTasks "clean", "build"

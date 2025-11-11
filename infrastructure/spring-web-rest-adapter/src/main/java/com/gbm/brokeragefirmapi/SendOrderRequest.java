@@ -1,12 +1,12 @@
 package com.gbm.brokeragefirmapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gbm.brokeragefirmapi.domain.model.Order.OrderOperation;
+import com.gbm.brokeragefirmapi.domain.model.OrderOperation;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 

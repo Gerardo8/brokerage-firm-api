@@ -32,8 +32,8 @@ public class CreateAccountRestMapper {
     public static IssuerDto createIssuerDtoFrom(final Issuer issuer) {
 
         return IssuerDto.builder()
-                .issuerName(issuer.getStock().getIssuerName())
-                .sharePrice(issuer.getStock().getSharePrice())
+                .issuerName(issuer.getStock().issuerName())
+                .sharePrice(issuer.getStock().sharePrice())
                 .totalShares(issuer.getTotalShares())
                 .build();
     }

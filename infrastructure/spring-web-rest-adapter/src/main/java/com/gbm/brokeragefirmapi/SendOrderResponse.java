@@ -1,7 +1,7 @@
 package com.gbm.brokeragefirmapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError;
+import com.gbm.brokeragefirmapi.domain.model.BusinessError;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

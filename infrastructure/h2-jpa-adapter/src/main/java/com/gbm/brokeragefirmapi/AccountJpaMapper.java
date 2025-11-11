@@ -12,12 +12,11 @@ public class AccountJpaMapper {
 
     public static Account accountFrom(final AccountJpaEntity accountJpaEntity) {
 
-        return Account
-                .builder()
-                .id(accountJpaEntity.getId())
-                .cash(accountJpaEntity.getCash())
-                .issuers(new ArrayList<>())
-                .build();
+        return new Account(
+                accountJpaEntity.getId(),
+                accountJpaEntity.getCash(),
+                new ArrayList<>()
+        );
     }
 
     public static AccountJpaEntity accountJpaEntityFrom(final Account account) {

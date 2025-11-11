@@ -6,16 +6,14 @@ import com.gbm.brokeragefirmapi.port.primary.SendOrderUseCase;
 import com.gbm.brokeragefirmapi.port.secondary.AccountRepository;
 import com.gbm.brokeragefirmapi.port.secondary.IssuerTransactionRepository;
 import com.gbm.brokeragefirmapi.port.secondary.StockRepository;
-import lombok.RequiredArgsConstructor;
 
 import static com.gbm.brokeragefirmapi.domain.factory.AccountFactory.createDefaultAccount;
 import static com.gbm.brokeragefirmapi.domain.factory.IssuerTransactionFactory.createIssuerTransactionId;
 import static com.gbm.brokeragefirmapi.domain.factory.ProcessedOrderFactory.createFailedProcessedOrder;
-import static com.gbm.brokeragefirmapi.domain.model.ProcessedOrder.BusinessError.*;
+import static com.gbm.brokeragefirmapi.domain.model.BusinessError.*;
 import static com.gbm.brokeragefirmapi.utils.SendOrderConstants.SIX_AM;
 import static com.gbm.brokeragefirmapi.utils.SendOrderConstants.THREE_PM;
 
-@RequiredArgsConstructor
 public class SendOrderService implements SendOrderUseCase {
 
     private final AccountRepository accountRepository;
@@ -23,6 +21,14 @@ public class SendOrderService implements SendOrderUseCase {
     private final IssuerTransactionRepository issuerTransactionRepository;
     private final SendBuyOrderOperation sendBuyOrderOperation;
     private final SendSellOrderOperation sendSellOrderOperation;
+
+    public SendOrderService(AccountRepository accountRepository, StockRepository stockRepository, IssuerTransactionRepository issuerTransactionRepository, SendBuyOrderOperation sendBuyOrderOperation, SendSellOrderOperation sendSellOrderOperation) {
+        this.accountRepository = accountRepository;
+        this.stockRepository = stockRepository;
+        this.issuerTransactionRepository = issuerTransactionRepository;
+        this.sendBuyOrderOperation = sendBuyOrderOperation;
+        this.sendSellOrderOperation = sendSellOrderOperation;
+    }
 
     @Override
     public ProcessedOrder sendOrder(final Order order) {
@@ -61,8 +67,8 @@ public class SendOrderService implements SendOrderUseCase {
 
         final var stock = optionalStock.get();
 
-        order.setIssuerName(stock.getIssuerName());
-        order.setSharePrice(stock.getSharePrice());
+        order.setIssuerName(stock.issuerName());
+        order.setSharePrice(stock.sharePrice());
 
         return switch (order.getOperation()) {
             case BUY -> this.sendBuyOrderOperation.sendOrder(order, stock, account);

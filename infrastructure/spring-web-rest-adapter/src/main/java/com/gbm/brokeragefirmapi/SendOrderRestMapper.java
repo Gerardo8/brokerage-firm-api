@@ -28,16 +28,16 @@ public class SendOrderRestMapper {
 
     public static SendOrderResponse sendOrderResponseFrom(final ProcessedOrder processedOrder) {
 
-        final var currentBalance = processedOrder.getCurrentBalance();
+        final var currentBalance = processedOrder.currentBalance();
 
-        final var issuers = currentBalance.getIssuers()
+        final var issuers = currentBalance.issuers()
                 .stream()
                 .map(CreateAccountRestMapper::createIssuerDtoFrom)
                 .collect(toList());
 
         return new SendOrderResponse(
-                new CurrentBalanceDto(currentBalance.getCash(), issuers),
-                processedOrder.getBusinessErrors()
+                new CurrentBalanceDto(currentBalance.cash(), issuers),
+                processedOrder.businessErrors()
         );
     }
 }

@@ -2,13 +2,13 @@ package com.gbm.brokeragefirmapi.domain.factory;
 
 import com.gbm.brokeragefirmapi.domain.model.IssuerTransaction;
 import com.gbm.brokeragefirmapi.domain.model.Order;
-import lombok.NoArgsConstructor;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static lombok.AccessLevel.PRIVATE;
 
-@NoArgsConstructor(access = PRIVATE)
 public class IssuerTransactionFactory {
+
+    private IssuerTransactionFactory() {
+    }
 
     public static String createIssuerTransactionId(final Order order) {
 
@@ -17,14 +17,14 @@ public class IssuerTransactionFactory {
 
     public static IssuerTransaction createIssuerTransaction(final Order order) {
 
-        return IssuerTransaction.builder()
-                .id(createIssuerTransactionId(order))
-                .issuerName(order.getIssuerName())
-                .totalShares(order.getTotalShares())
-                .sharePrice(order.getSharePrice())
-                .timestamp(order.getTimestamp())
-                .operation(order.getOperation())
-                .timeToLive(MINUTES.toMillis(5L))
-                .build();
+        return new IssuerTransaction(
+                createIssuerTransactionId(order),
+                order.getIssuerName(),
+                order.getTotalShares(),
+                order.getSharePrice(),
+                order.getTimestamp(),
+                order.getOperation(),
+                MINUTES.toMillis(5L)
+        );
     }
 }
